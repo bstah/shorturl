@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Shorturl;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ShorturlController extends Controller
 {
@@ -46,8 +45,8 @@ class ShorturlController extends Controller
         }
 
         //check if url is already in database
-        if(DB::table('shorturls')->where('longurl', $longurl)->exists()){
-            $randomString = DB::table('shorturls')->where('longurl', $longurl)->value('shorturl');
+        if(Shorturl::where('longurl', $longurl)->exists()){
+            $randomString = Shorturl::where('longurl', $longurl)->value('shorturl');
         }
         else{
             //get random string for the short url and check if already in database
@@ -60,7 +59,7 @@ class ShorturlController extends Controller
                     $randomCharacter = $chars[mt_rand(0,$charslength - 1)];
                     $randomString .= $randomCharacter;
                 }
-            }while (DB::table('shorturls')->where('shorturl', $randomString)->exists());
+            }while (Shorturl::where('shorturl', $randomString)->exists());
 
             $short = new Shorturl();
             $short->longurl = $longurl;
@@ -81,9 +80,9 @@ class ShorturlController extends Controller
      */
     public function show($shorturl)
     {
-
-        $longurl = DB::table('shorturls')->where('shorturl', $shorturl)->value('longurl');
-        
+        $longurl = Shorturl::where('shorturl',$shorturl)->value('longurl');
+        if(is_null($longurl))
+            abort(404);
         return redirect($longurl);
     }
 
