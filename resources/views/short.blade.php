@@ -7,7 +7,7 @@
 <form method="POST" action='/'>
 	{{ csrf_field() }}
 	<div class="mb-3">
-		<input type="text" name="longurl" style="width: 500px;">
+		<input type="text" name="longurl" style="width: 500px;" @isset($longurl)value="{{ $longurl }}"@endisset>
 		<input type="submit" name="" class="btn btn-primary"><br>
 		@isset($error)
 		<div class="alert alert-danger" role="alert">

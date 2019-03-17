@@ -41,7 +41,7 @@ class ShorturlController extends Controller
         $headers = @get_headers($longurl);
         if(!$headers || strpos($headers[0], '404')) {
             $error = 'URL does not exist. Make sure that it has the leading http:// or https://';
-            return view('short',['error'=>$error]);
+            return view('short',['error'=>$error,'longurl'=>$longurl]);
         }
 
         //check if url is already in database
@@ -69,7 +69,7 @@ class ShorturlController extends Controller
         }
         $shorturl = url("/{$randomString}");
 
-        return view('short',['shorturl'=>$shorturl]);
+        return view('short',['shorturl'=>$shorturl, 'longurl'=>$longurl]);
     }
 
     /**
